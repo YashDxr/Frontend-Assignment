@@ -12,30 +12,32 @@
 
 ## Installation
 
-    1. Clone the repository
+1. Clone the repository
+  ```bash
   git clone https://github.com/Priyanshu9898/Frontend-Assignment.git
 
+```
 
-    2. Install dependencies 
+ 2. Install dependencies 
 ```bash
   cd Frontend-Assignment
   npm i or npm install
 ```
 
 
-    3. Start the development server
+3. Start the development server
 ```bash
   npm run dev
 ```
 
-    This will run the app in development mode. Open http://localhost:5173 to view it in the browser.
+This will run the app in development mode. Open http://localhost:5173 to view it in the browser.
 
 ## Building for production
-    To create a production build, run:
+To create a production build, run:
 
 ```bash
 npm run build
 ```
 
-    This will build the app for production and output the files to the build folder. The build is minified, and the filenames include the hashes for efficient caching.
+This will build the app for production and output the files to the build folder. The build is minified, and the filenames include the hashes for efficient caching.
 
