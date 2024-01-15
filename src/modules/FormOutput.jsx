@@ -1,19 +1,13 @@
-import { useEffect, useState } from "react";
-import Select from "../components/Select";
-import { useForm } from "react-hook-form";
-import InfoIcon from "@mui/icons-material/Info";
-import IconButton from "@mui/material/IconButton";
-import Tooltip from "@mui/material/Tooltip";
+import { useState, useEffect } from "react";
 import Button from "@mui/material/Button";
-import ButtonGroup from "@mui/material/ButtonGroup";
 import InfoIconButton from "../components/InfoIconButton";
+import SelectType from "../components/SelectType";
 
 export default function FormOutput({ jsonData }) {
   const [formData, setFormData] = useState("");
-  const { register, handleSubmit } = useForm();
 
   useEffect(() => {
-    console.log("jsonData:", jsonData);
+    // console.log("jsonData:", jsonData);
 
     if (typeof jsonData === "string") {
       try {
@@ -26,8 +20,8 @@ export default function FormOutput({ jsonData }) {
   }, [jsonData]);
 
   return (
-    <div className="flex flex-row justify-center">
-      <form onSubmit={handleSubmit(() => console.log("hello"))}>
+    <div className="flex flex-row m-4">
+      <form>
         {Array.isArray(formData) && formData.length > 0 ? (
           formData.map((e) => {
             return e.uiType === "Input" ? (
@@ -35,47 +29,56 @@ export default function FormOutput({ jsonData }) {
                 <label>{e.label}</label>
                 {e.description != "" ? (
                   <div className="relative">
-                    <InfoIconButton description={e.description}/>
+                    <InfoIconButton desc={e.description} />
                   </div>
                 ) : (
                   <></>
                 )}
                 <input
-                  {...register(e.jsonKey)}
                   placeholder={e.placeholder}
                   type="text"
                   className="border-black mx-3 border-2"
                 />
               </div>
             ) : e.uiType === "Group" ? (
-              <div key={e.sort} className="flex flex-col items-center m-2">
+              <div key={e.sort} className="flex flex-col m-2">
                 <label>{e.label}</label>
-                {e.description != "" ? (
+                {e.description !== "" ? (
                   <div className="relative">
-                    <Tooltip title={e.description}>
-                      <IconButton size="small">
-                        <InfoIcon
-                          className="text-slate-400 cursor-pointer"
-                          fontSize="small"
-                        />
-                      </IconButton>
-                    </Tooltip>
+                    <InfoIconButton desc={e.description} />
                   </div>
                 ) : (
                   <></>
                 )}
-                <ButtonGroup
-                  className="m-2 "
-                  variant="outlined"
-                  aria-label="outlined button group"
-                >
-                  <Button className="mx-2">One</Button>
-                  <Button>Two</Button>
-                  <Button>Three</Button>
-                </ButtonGroup>
+                <label>{e.subParameters.label}</label>
+                <div>
+                  {e.subParameters.map((element) => {
+                    return element.uiType == "Radio" ? (
+                      <div  className="flex flex-row">
+                        {element.validate.options.map((option) => (
+                          <Button
+                            key={option.value}
+                            variant="contained"
+                            style={{ marginRight: "8px" }}
+                          >
+                            {option.label}
+                          </Button>
+                        ))}
+                      </div>
+                    ) : element.uiType == "Select" ? (
+                      <div>
+                        <SelectType key={element.label} element={element} />
+                      </div>
+                    ) : element.uiType == "Switch" ? (
+                      <div key={element.label}>Switch Type</div>
+                    ) : (
+                      <div></div>
+                    );
+                  })}
+                </div>
               </div>
             ) : (
-              <Select key={e.sort} data={e} />
+              <SelectType key={e.sort} data={e} />
             );
           })
         ) : (
