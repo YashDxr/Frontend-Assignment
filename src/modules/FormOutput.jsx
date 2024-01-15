@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import Button from "@mui/material/Button";
-import InfoIconButton from "../components/InfoIconButton";
 import SelectType from "../components/SelectType";
+import Input from "../components/Input";
+import Group from "../components/Group";
 
 export default function FormOutput({ jsonData }) {
   const [formData, setFormData] = useState("");
@@ -19,66 +19,22 @@ export default function FormOutput({ jsonData }) {
     }
   }, [jsonData]);
 
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    console.log("Submitted");
+  };
+
   return (
     <div className="flex flex-row m-4">
-      <form>
+      <form onSubmit={handleSubmit}>
         {Array.isArray(formData) && formData.length > 0 ? (
           formData.map((e) => {
             return e.uiType === "Input" ? (
-              <div key={e.sort} className="flex flex-row items-center m-2">
-                <label>{e.label}</label>
-                {e.description != "" ? (
-                  <div className="relative">
-                    <InfoIconButton desc={e.description} />
-                  </div>
-                ) : (
-                  <></>
-                )}
-                <input
-                  placeholder={e.placeholder}
-                  type="text"
-                  className="border-black mx-3 border-2"
-                />
-              </div>
+              <Input data={e} />
             ) : e.uiType === "Group" ? (
-              <div key={e.sort} className="flex flex-col m-2">
-                <label>{e.label}</label>
-                {e.description !== "" ? (
-                  <div className="relative">
-                    <InfoIconButton desc={e.description} />
-                  </div>
-                ) : (
-                  <></>
-                )}
-                <label>{e.subParameters.label}</label>
-                <div>
-                  {e.subParameters.map((element) => {
-                    return element.uiType == "Radio" ? (
-                      <div  className="flex flex-row">
-                        {element.validate.options.map((option) => (
-                          <Button
-                            key={option.value}
-                            variant="contained"
-                            style={{ marginRight: "8px" }}
-                          >
-                            {option.label}
-                          </Button>
-                        ))}
-                      </div>
-                    ) : element.uiType == "Select" ? (
-                      <div>
-                        <SelectType key={element.label} element={element} />
-                      </div>
-                    ) : element.uiType == "Switch" ? (
-                      <div key={element.label}>Switch Type</div>
-                    ) : (
-                      <div></div>
-                    );
-                  })}
-                </div>
-              </div>
+              <Group data={e} />
             ) : (
-              <SelectType key={e.sort} data={e} />
+              <SelectType key={e.jsonKey} element={e} />
             );
           })
         ) : (

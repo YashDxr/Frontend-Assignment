@@ -19,7 +19,7 @@ export default function SelectType({ element }) {
 
   return (
     <div className="m-2">
-      {obj && <label>{obj.label}</label>}
+      {obj && <label>{obj.label}:</label>}
       <Select
         value={item}
         onChange={itemSelection}
