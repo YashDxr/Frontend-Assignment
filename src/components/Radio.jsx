@@ -3,13 +3,14 @@ import { useEffect, useState } from "react";
 
 export default function Radio({ data }) {
   const [obj, setObj] = useState({});
+
   useEffect(() => {
     setObj(data);
   }, [data]);
-
   if (!obj || !obj.jsonKey) {
     return null;
   }
+
   return (
     <div key={obj.jsonKey} className="flex flex-row">
       {obj.validate.options.map((option) => (

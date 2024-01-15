@@ -8,7 +8,7 @@ export default function Group({ data }) {
   const [obj, setObj] = useState({});
 
   useEffect(() => {
-    console.log(data);
+    // console.log(data);
     setObj(data);
   }, [data]);
 
